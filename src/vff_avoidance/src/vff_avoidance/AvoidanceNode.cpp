@@ -136,22 +136,13 @@ void AvoidanceNode::computeVectors()
     angular_speed = -max_angular_speed_;
   }
 
-  // Debug logging
-//  RCLCPP_INFO(this->get_logger(), "Attractive: (%f, %f)", attractive_x, attractive_y);
-//  RCLCPP_INFO(this->get_logger(), "Repulsive: (%f, %f)", repulsive_x, repulsive_y);
-//  RCLCPP_INFO(this->get_logger(), "Resultant: (%f, %f)", result_x, result_y);
-//  if (obstacle_found) {
-//    RCLCPP_INFO(this->get_logger(), "Closest obstacle: %f, Speed factor: %f", closest_distance, speed_factor);
-//  }
-//  RCLCPP_INFO(this->get_logger(), "Command: linear=%f angular=%f", linear_speed, angular_speed);
-
   // Publish the twist command
   geometry_msgs::msg::Twist cmd_msg;
   cmd_msg.linear.x = linear_speed;
   cmd_msg.angular.z = angular_speed;
   cmd_vel_publisher_->publish(cmd_msg);
 
-  // Publish debugging markers if subscribers exist
+  // Publish debugging markers so that RViz can display the vectors.
   if (marker_publisher_->get_subscription_count() > 0) {
     publishMarkers(attractive_x, attractive_y, repulsive_x, repulsive_y, result_x, result_y);
   }
@@ -172,9 +163,9 @@ void AvoidanceNode::publishMarkers(double attractive_x, double attractive_y,
   attractive_marker.type = visualization_msgs::msg::Marker::ARROW;
   attractive_marker.action = visualization_msgs::msg::Marker::ADD;
   attractive_marker.pose.orientation.w = 1.0;
-  attractive_marker.scale.x = 0.5; // Arrow length
-  attractive_marker.scale.y = 0.1; // Shaft diameter
-  attractive_marker.scale.z = 0.1; // Head diameter
+  attractive_marker.scale.x = 0.1; // Arrow length
+  attractive_marker.scale.y = 0.000125; // Shaft diameter
+  attractive_marker.scale.z = 0.005; // Head diameter
   attractive_marker.color.r = 0.0;
   attractive_marker.color.g = 0.0;
   attractive_marker.color.b = 1.0;
@@ -197,9 +188,9 @@ void AvoidanceNode::publishMarkers(double attractive_x, double attractive_y,
   repulsive_marker.type = visualization_msgs::msg::Marker::ARROW;
   repulsive_marker.action = visualization_msgs::msg::Marker::ADD;
   repulsive_marker.pose.orientation.w = 1.0;
-  repulsive_marker.scale.x = 0.5;
-  repulsive_marker.scale.y = 0.1;
-  repulsive_marker.scale.z = 0.1;
+  repulsive_marker.scale.x = 0.1;  // arrow length
+  repulsive_marker.scale.y = 0.000125; // shaft diameter
+  repulsive_marker.scale.z = 0.005; // head diameter
   repulsive_marker.color.r = 1.0;
   repulsive_marker.color.g = 0.0;
   repulsive_marker.color.b = 0.0;
@@ -222,9 +213,9 @@ void AvoidanceNode::publishMarkers(double attractive_x, double attractive_y,
   result_marker.type = visualization_msgs::msg::Marker::ARROW;
   result_marker.action = visualization_msgs::msg::Marker::ADD;
   result_marker.pose.orientation.w = 1.0;
-  result_marker.scale.x = 0.5;
-  result_marker.scale.y = 0.1;
-  result_marker.scale.z = 0.1;
+  result_marker.scale.x = 0.1;  // arrow length
+  result_marker.scale.y = 0.000125; // shaft diameter
+  result_marker.scale.z = 0.005; // head diameter
   result_marker.color.r = 0.0;
   result_marker.color.g = 1.0;
   result_marker.color.b = 0.0;
@@ -242,4 +233,3 @@ void AvoidanceNode::publishMarkers(double attractive_x, double attractive_y,
 }
 
 }  // namespace vff_avoidance
-
