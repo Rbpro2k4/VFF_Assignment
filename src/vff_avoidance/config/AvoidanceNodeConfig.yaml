@@ -1,0 +1,14 @@
+avoidance_node:
+  ros__parameters:
+    use_sim_time: true
+    laser_topic: "/scan"
+    cmd_vel_topic: "/cmd_vel"
+    marker_topic: "/vff_markers"
+    timer_frequency: 20.0
+    attractive_gain: 1.0
+    repulsive_gain: 1.0
+    max_linear_speed: 0.5
+    max_angular_speed: 1.0
+    obstacle_distance_threshold: 1.0
+    min_valid_scan_age: 2.0
+
